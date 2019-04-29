@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Set;
 
-public class HangmanView extends JFrame implements ActionListener {
+public class HangmanView extends JFrame implements IHangmanView,ActionListener {
 
     class JTextFieldLimit extends PlainDocument {
         private int limit;
@@ -60,22 +60,9 @@ public class HangmanView extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private void pritnGuess(Set<Character> guesses)
+    @Override
+    public void printGuess(Set<Character> guesses)
     {
-        String line = " ___ ";
-        String screen = "";
-        for(String text : gl.getWord())
-        {
-            for (char letter : text.toCharArray())
-            {
-                if(guesses.contains(letter))
-                {
-                    screen+=letter;
-                }
-                else screen +=line;
-            }
-            screen +="      ";
-        }
         text.setText(screen);
     }
 
@@ -85,9 +72,9 @@ public class HangmanView extends JFrame implements ActionListener {
         count++;
         label.setText("num of guesses = "+count);
         char g;
-        if(e.getSource() ==button)
+        if(e.getSource() == button)
         {
-            g=guess.getText().toCharArray()[0];
+            g = guess.getText().toCharArray()[0];
         }
         else g= e.getActionCommand().toCharArray()[0];
         guess.setText("");
