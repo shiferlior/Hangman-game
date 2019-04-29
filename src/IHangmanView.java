@@ -1,6 +1,9 @@
+import java.awt.event.ActionListener;
 import java.util.Set;
 
 public interface IHangmanView {
-    void printGuess(Set<Character> guesses);
+    void printOnScreen(String text);
+    void increaseGuessCounter();
+    void addGuessListener(ActionListener listener);
 
 }
