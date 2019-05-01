@@ -5,5 +5,6 @@ public interface IHangmanView {
     void printOnScreen(String text);
     void increaseGuessCounter();
     void addGuessListener(ActionListener listener);
+    void addElementToHangman() throws Exception;
 
 }

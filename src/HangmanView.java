@@ -21,6 +21,8 @@ public class HangmanView extends JFrame implements IHangmanView{
     private JComboBox _letterListOptionsCB;
     private JPanel _paintPnl;
     private int _counterGuess;
+    private HangmanDraw _hangmanDraw;
+
     public HangmanView(){
         super("hangman");
         _counterGuess = 0;
@@ -30,12 +32,12 @@ public class HangmanView extends JFrame implements IHangmanView{
         _counterGuessLbl = new JLabel("num of guesses = 0", SwingConstants.CENTER);
         _paintPnl = new JPanel();
 
-        HangmanDraw hd = new HangmanDraw(2);
+        _hangmanDraw= new HangmanDraw(2);
 
 
         add(_counterGuessLbl, BorderLayout.WEST);
         add(_phraseLbl, BorderLayout.NORTH);
-        add(hd,BorderLayout.CENTER);
+        add(_hangmanDraw,BorderLayout.CENTER);
         add(_letterListOptionsCB, BorderLayout.SOUTH);
 
         setSize(WIDTH,HEIGHT);
@@ -68,8 +70,13 @@ public class HangmanView extends JFrame implements IHangmanView{
         _counterGuessLbl.setText("num of guesses = " + (++_counterGuess));
     }
 
-    public void addElementToHangman() {
-
+    public void addElementToHangman() throws Exception {
+        try {
+            _hangmanDraw.increaseNumberOfElementToShow();
+        }
+        catch (Exception e){
+            throw e;
+        }
     }
 
     public void addGuessListener(ActionListener listener) {

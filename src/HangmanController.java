@@ -10,26 +10,26 @@ public class HangmanController {
 
         private IHangmanModel _hangmanModel;
         private IHangmanView _hangmanView;
-        private GameLogic _gl;
+        private HangmanGameLogic _gl;
 
-        public HangmanController(IHangmanView hangmanView,IHangmanModel hangmanModel,GameLogic gl){
+        public HangmanController(IHangmanView hangmanView, IHangmanModel hangmanModel, HangmanGameLogic gl){
             _hangmanView = hangmanView;
             _hangmanModel = hangmanModel;
             _gl = gl;
 
             _hangmanView.addGuessListener(new lettersListener());
+            pritnGuess(new HashSet());
         }
 
         private void pritnGuess(Set<Character> guesses)
         {
-            String line = " __ ";
             String showOnScreen = "";
             for(String text : _gl.getWord()) {
                 for (char letter : text.toCharArray()) {
                     if(guesses.contains(letter))
                         showOnScreen += letter + " ";
                     else
-                        showOnScreen += line;
+                        showOnScreen += " __ ";
                 }
                 showOnScreen +="      ";
             }
@@ -44,14 +44,22 @@ public class HangmanController {
 
             _hangmanView.increaseGuessCounter();
 
-            GamePackage gp = _gl.guessLetter(letter);
-            pritnGuess(gp.guess);
-            if (gp.finished) {
+            
+            try {
+                _hangmanView.addElementToHangman();
+            }
+            catch (Exception ex){
+                _hangmanView.printOnScreen(ex.getMessage());
+            }
+
+            HangmanGameState gp = _gl.guessLetter(letter);
+            pritnGuess(gp.getGuess());
+            if (gp.getIsFinished()) {
                 _hangmanView.printOnScreen("");
                 int answer = JOptionPane.showConfirmDialog(null, "you won!!! do you want another game?", "YOU WON!", JOptionPane.YES_NO_OPTION);
                 if (answer == JOptionPane.YES_OPTION) {
                     _gl.resetGame();
-                    pritnGuess(new HashSet<>());
+                    pritnGuess(new HashSet());
                 } else System.exit(0);
             }
         }
