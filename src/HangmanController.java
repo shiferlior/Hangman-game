@@ -8,28 +8,6 @@ import java.util.Set;
 
 public class HangmanController {
 
-//        class JTextFieldLimit extends PlainDocument {
-//            private int limit;
-//            JTextFieldLimit(int limit) {
-//                super();
-//                this.limit = limit;
-//            }
-//
-//            JTextFieldLimit(int limit, boolean upper) {
-//                super();
-//                this.limit = limit;
-//            }
-//
-//            public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
-//                if (str == null)
-//                    return;
-//
-//                if ((getLength() + str.length()) <= limit) {
-//                    super.insertString(offset, str, attr);
-//                }
-//            }
-//        }
-
         private IHangmanModel _hangmanModel;
         private IHangmanView _hangmanView;
         private GameLogic _gl;
@@ -44,16 +22,16 @@ public class HangmanController {
 
         private void pritnGuess(Set<Character> guesses)
         {
-            String line = " ___ ";
+            String line = " __ ";
             String showOnScreen = "";
             for(String text : _gl.getWord()) {
                 for (char letter : text.toCharArray()) {
                     if(guesses.contains(letter))
-                        showOnScreen += letter;
+                        showOnScreen += letter + " ";
                     else
                         showOnScreen += line;
                 }
-                showOnScreen +="\t";
+                showOnScreen +="      ";
             }
             _hangmanView.printOnScreen(showOnScreen);
         }
@@ -62,14 +40,10 @@ public class HangmanController {
     private class lettersListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             JComboBox cb = (JComboBox)e.getSource();
-            char letter = (char)cb.getSelectedItem();
+            char letter = cb.getSelectedItem().toString().charAt(0);
 
             _hangmanView.increaseGuessCounter();
-//            char g;
-//            if (e.getSource() == button) {
-//                g = guess.getText().toCharArray()[0];
-//            } else g = e.getActionCommand().toCharArray()[0];
-//            guess.setText("");
+
             GamePackage gp = _gl.guessLetter(letter);
             pritnGuess(gp.guess);
             if (gp.finished) {

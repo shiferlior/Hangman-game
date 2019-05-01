@@ -1,37 +1,46 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.HashSet;
 import java.util.Set;
 
 public class HangmanView extends JFrame implements IHangmanView{
 
+    private int WIDTH = 600;
+    private int HEIGHT = 400;
 
     private JLabel _counterGuessLbl;
     private JLabel _phraseLbl;
     private JComboBox _letterListOptionsCB;
+    private JPanel _paintPnl;
     private int _counterGuess;
-
     public HangmanView(){
         super("hangman");
         _counterGuess = 0;
         _letterListOptionsCB = buildLettersOptions('a','z');
 
-        _phraseLbl = new JLabel("", SwingConstants.CENTER);
+        _phraseLbl = new JLabel(" ", SwingConstants.CENTER);
         _counterGuessLbl = new JLabel("num of guesses = 0", SwingConstants.CENTER);
+        _paintPnl = new JPanel();
 
-        add(_counterGuessLbl, BorderLayout.SOUTH);
-        add(_phraseLbl, BorderLayout.CENTER);
-        add(_letterListOptionsCB, BorderLayout.WEST);
+        HangmanDraw hd = new HangmanDraw(2);
 
-        setSize(600,400);
+
+        add(_counterGuessLbl, BorderLayout.WEST);
+        add(_phraseLbl, BorderLayout.NORTH);
+        add(hd,BorderLayout.CENTER);
+        add(_letterListOptionsCB, BorderLayout.SOUTH);
+
+        setSize(WIDTH,HEIGHT);
         setVisible(true);
 
-        printOnScreen("");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
@@ -50,6 +59,7 @@ public class HangmanView extends JFrame implements IHangmanView{
     public void printOnScreen(String text)
     {
         _phraseLbl.setText(text);
+        repaint();
     }
 
     @Override
@@ -58,9 +68,11 @@ public class HangmanView extends JFrame implements IHangmanView{
         _counterGuessLbl.setText("num of guesses = " + (++_counterGuess));
     }
 
+    public void addElementToHangman() {
+
+    }
+
     public void addGuessListener(ActionListener listener) {
         _letterListOptionsCB.addActionListener(listener);
     }
-
-
 }
