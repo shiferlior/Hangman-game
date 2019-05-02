@@ -1,9 +1,9 @@
 import java.awt.event.ActionListener;
-import java.util.Set;
 
 public interface IHangmanView {
     void printOnScreen(String text);
-    void increaseGuessCounter();
+    void increaseRejectionGuessCounter();
+    void showMessage(String text);
     void addGuessListener(ActionListener listener);
     void addElementToHangman() throws Exception;
 

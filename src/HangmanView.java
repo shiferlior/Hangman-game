@@ -19,21 +19,17 @@ public class HangmanView extends JFrame implements IHangmanView{
     private JLabel _counterGuessLbl;
     private JLabel _phraseLbl;
     private JComboBox _letterListOptionsCB;
-    private JPanel _paintPnl;
     private int _counterGuess;
-    private HangmanDraw _hangmanDraw;
+    private JPanel _hangmanDraw;
 
-    public HangmanView(){
+    public HangmanView(JPanel hangmanDraw){
         super("hangman");
         _counterGuess = 0;
         _letterListOptionsCB = buildLettersOptions('a','z');
 
         _phraseLbl = new JLabel(" ", SwingConstants.CENTER);
-        _counterGuessLbl = new JLabel("num of guesses = 0", SwingConstants.CENTER);
-        _paintPnl = new JPanel();
-
-        _hangmanDraw= new HangmanDraw(2);
-
+        _counterGuessLbl = new JLabel("Num of rejection = 0", SwingConstants.CENTER);
+        _hangmanDraw = hangmanDraw;
 
         add(_counterGuessLbl, BorderLayout.WEST);
         add(_phraseLbl, BorderLayout.NORTH);
@@ -57,22 +53,26 @@ public class HangmanView extends JFrame implements IHangmanView{
         return new JComboBox(letters);
     }
 
-    @Override
+
     public void printOnScreen(String text)
     {
         _phraseLbl.setText(text);
         repaint();
     }
 
-    @Override
-    public void increaseGuessCounter()
+    public void increaseRejectionGuessCounter()
     {
-        _counterGuessLbl.setText("num of guesses = " + (++_counterGuess));
+        _counterGuessLbl.setText("Num of rejection = " + (++_counterGuess));
+    }
+
+    public void showMessage(String text) {
+        JOptionPane.showConfirmDialog(null, text, text, JOptionPane.CLOSED_OPTION);
     }
 
     public void addElementToHangman() throws Exception {
         try {
-            _hangmanDraw.increaseNumberOfElementToShow();
+            if(_hangmanDraw instanceof IIncreaseableNumberElementsToShow)
+                ((IIncreaseableNumberElementsToShow)_hangmanDraw).increaseNumberOfElementToShow();
         }
         catch (Exception e){
             throw e;

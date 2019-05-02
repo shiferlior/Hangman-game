@@ -1,5 +1,3 @@
-
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,14 +6,12 @@ import java.util.Set;
 
 public class HangmanController {
 
-        private IHangmanModel _hangmanModel;
         private IHangmanView _hangmanView;
-        private HangmanGameLogic _gl;
+        private IHangmanGameLogic _hangmanGameLogic;
 
-        public HangmanController(IHangmanView hangmanView, IHangmanModel hangmanModel, HangmanGameLogic gl){
+        public HangmanController(IHangmanView hangmanView, IHangmanGameLogic gl){
             _hangmanView = hangmanView;
-            _hangmanModel = hangmanModel;
-            _gl = gl;
+            _hangmanGameLogic = gl;
 
             _hangmanView.addGuessListener(new lettersListener());
             pritnGuess(new HashSet());
@@ -24,7 +20,7 @@ public class HangmanController {
         private void pritnGuess(Set<Character> guesses)
         {
             String showOnScreen = "";
-            for(String text : _gl.getWord()) {
+            for(String text : _hangmanGameLogic.getWord()) {
                 for (char letter : text.toCharArray()) {
                     if(guesses.contains(letter))
                         showOnScreen += letter + " ";
@@ -42,26 +38,34 @@ public class HangmanController {
             JComboBox cb = (JComboBox)e.getSource();
             char letter = cb.getSelectedItem().toString().charAt(0);
 
-            _hangmanView.increaseGuessCounter();
+            HangmanGameState hgState = _hangmanGameLogic.guessLetter(letter);
+            if(!hgState.isSuccessToGuessLastTime())
+                rejectGuess();
+            pritnGuess(hgState.getGuess());
+            if (hgState.getIsFinished())
+                finishTheGame(hgState);
+        }
+    }
 
-            
+    private void rejectGuess() {
             try {
                 _hangmanView.addElementToHangman();
             }
             catch (Exception ex){
-                _hangmanView.printOnScreen(ex.getMessage());
+                System.out.println(ex.toString());
             }
+            _hangmanView.increaseRejectionGuessCounter();
+    }
 
-            HangmanGameState gp = _gl.guessLetter(letter);
-            pritnGuess(gp.getGuess());
-            if (gp.getIsFinished()) {
-                _hangmanView.printOnScreen("");
-                int answer = JOptionPane.showConfirmDialog(null, "you won!!! do you want another game?", "YOU WON!", JOptionPane.YES_NO_OPTION);
-                if (answer == JOptionPane.YES_OPTION) {
-                    _gl.resetGame();
-                    pritnGuess(new HashSet());
-                } else System.exit(0);
-            }
-        }
+    private void finishTheGame(HangmanGameState hgState){
+        String endGameMessage;
+        if(!hgState.isSuccessToGuessLastTime())
+            endGameMessage = "You Lose!!";
+        else
+            endGameMessage = "You Win!!";
+        _hangmanView.printOnScreen(endGameMessage);
+        _hangmanView.showMessage(endGameMessage);
+        System.exit(0);
+
     }
 }

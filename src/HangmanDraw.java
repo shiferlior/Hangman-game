@@ -2,8 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class HangmanDraw extends JPanel {
-    private ArrayList<IDrawabel> _lines;
+public class HangmanDraw extends JPanel implements IIncreaseableNumberElementsToShow{
+    private ArrayList<IDrawable> _lines;
     private int _numberOfElementToShow;
 
     public HangmanDraw(int numberOfElementToShow) {
@@ -34,37 +34,9 @@ public class HangmanDraw extends JPanel {
         repaint();
     }
 
-    private class Line implements IDrawabel {
-        private int _x,_y,_x1,_y1;
-        public Line(int x,int y,int x1, int y1){
-            _x = x;
-            _y = y;
-            _x1 = x1;
-            _y1 = y1;
-        }
-        public void draw(Graphics g){
-            g.drawLine(_x,_y,_x1,_y1);
-        }
-    }
 
-    private class Circle implements IDrawabel {
-        private int _x,_y,_r;
 
-        public Circle(int x,int y,int r){
-            _x = x;
-            _y = y;
-            _r = r;
-        }
 
-        public void draw(Graphics g) {
-            int diameter = _r * 2;
-            //_x = _x-(_r/2);
-            //_y = _y-(_r/2);
-            g.fillOval(_x - _r,_y - _r,diameter,diameter);
-        }
-    }
 
-    private interface IDrawabel {
-        void draw(Graphics g);
-    }
+
 }

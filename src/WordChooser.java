@@ -2,19 +2,18 @@ import java.util.Random;
 
 public class WordChooser implements IWordChooser {
 
-    private String[][] words;
+    private String[][] _words;
     public WordChooser(){
-        this.words = this.loadWords();
+        _words = this.loadWords();
     }
 
-    private String[][] loadWords()
-    {
+    private String[][] loadWords() {
         return null;
     }
 
     @Override
     public String[] getWord() {
-        int rnd = new Random().nextInt(this.words.length);
-        return this.words[rnd];
+        int rnd = new Random().nextInt(_words.length);
+        return _words[rnd];
     }
 }
