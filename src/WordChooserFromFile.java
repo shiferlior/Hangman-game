@@ -8,32 +8,38 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class WordChooserFromFile extends Component implements IWordChooser {
+    private String _filePath;
     private ArrayList<ArrayList<String>> _words;
 
     public WordChooserFromFile(){
         _words = new ArrayList<ArrayList<String>>();
-    }
-    @Override
-    public String[] getWord() {
+        getPath();
 
-        String filePath;
+    }
+
+    private void getPath(){
         JFileChooser getFile = new JFileChooser();
         getFile.setCurrentDirectory(new File(System.getProperty("user.home")));
         int result = getFile.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
-            filePath = getFile.getSelectedFile().getAbsolutePath();
-            if(filePath.endsWith("words.text"))
-                extractWords(filePath);
+            _filePath = getFile.getSelectedFile().getAbsolutePath();
+            if(_filePath.endsWith("words.text"))
+                extractWords(_filePath);
             else
-                errorMessage();
+                errorMessage("You must choose the file: words.text");
         }
         else
-            errorMessage();
+            errorMessage("You must choose the file: words.text");
+    }
+
+
+    @Override
+    public String[] getWord() {
         return randomWord();
     }
 
-    private void errorMessage(){
-        JOptionPane.showConfirmDialog(null, "You must choose the file: words.text", "Error!", JOptionPane.CLOSED_OPTION);
+    private void errorMessage(String text){
+        JOptionPane.showConfirmDialog(null, text, "Error!", JOptionPane.CLOSED_OPTION);
         System.exit(0);
     }
 
@@ -48,7 +54,7 @@ public class WordChooserFromFile extends Component implements IWordChooser {
         String word = "";
         ArrayList<String> phrase = new ArrayList<String>();
         try {
-            FileReader fr = new FileReader("/Users/l/Desktop/words.text");
+            FileReader fr = new FileReader(_filePath);
 
             while ((i = fr.read()) != -1) {
                 if ('a' <= i && i <= 'z') {
@@ -66,7 +72,7 @@ public class WordChooserFromFile extends Component implements IWordChooser {
                 }
             }
         } catch (Exception e) {
-            System.out.println(e);
+            errorMessage("Problem with extract the words from the file!");
         }
     }
 }

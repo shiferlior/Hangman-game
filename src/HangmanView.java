@@ -24,11 +24,7 @@ public class HangmanView extends JFrame implements IHangmanView{
 
     public HangmanView(JPanel hangmanDraw){
         super("hangman");
-        _counterGuess = 0;
-        _letterListOptionsCB = buildLettersOptions('a','z');
-
-        _phraseLbl = new JLabel(" ", SwingConstants.CENTER);
-        _counterGuessLbl = new JLabel("Num of rejection = 0", SwingConstants.CENTER);
+        init();
         _hangmanDraw = hangmanDraw;
 
         add(_counterGuessLbl, BorderLayout.WEST);
@@ -40,6 +36,14 @@ public class HangmanView extends JFrame implements IHangmanView{
         setVisible(true);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private void init(){
+        _counterGuess = 0;
+        _letterListOptionsCB = buildLettersOptions('a','z');
+
+        _phraseLbl = new JLabel(" ", SwingConstants.CENTER);
+        _counterGuessLbl = new JLabel("Num of rejection = 0", SwingConstants.CENTER);
     }
 
     private JComboBox buildLettersOptions(char fromLetter,char toLetter) {
@@ -54,14 +58,12 @@ public class HangmanView extends JFrame implements IHangmanView{
     }
 
 
-    public void printOnScreen(String text)
-    {
+    public void printOnScreen(String text) {
         _phraseLbl.setText(text);
         repaint();
     }
 
-    public void increaseRejectionGuessCounter()
-    {
+    public void increaseRejectionGuessCounter() {
         _counterGuessLbl.setText("Num of rejection = " + (++_counterGuess));
     }
 
