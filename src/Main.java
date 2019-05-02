@@ -7,13 +7,13 @@ public class Main {
         int numberOfRejection = 7;
         int BasicNumberElementsToDraw = 2;
 
-        JPanel hangmanDraw                  = new HangmanDraw(BasicNumberElementsToDraw);
-        IHangmanView hangmanView            = new HangmanView(hangmanDraw);
-
+        //You must search the file words.text
         IWordChooser wordChooser            = new WordChooserFromFile();
         IHangmanGameLogic hangmanGameLogic  = new HangmanGameLogic(wordChooser,numberOfRejection);
 
-        HangmanController hangmanController = new HangmanController(hangmanView,hangmanGameLogic);
+        JPanel hangmanDraw                  = new HangmanDraw(BasicNumberElementsToDraw);
+        IHangmanView hangmanView            = new HangmanView(hangmanDraw);
 
+        HangmanController hangmanController = new HangmanController(hangmanView,hangmanGameLogic);
     }
 }

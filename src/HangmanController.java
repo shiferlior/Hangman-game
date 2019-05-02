@@ -17,22 +17,6 @@ public class HangmanController {
             pritnGuess(new HashSet());
         }
 
-        private void pritnGuess(Set<Character> guesses)
-        {
-            String showOnScreen = "";
-            for(String text : _hangmanGameLogic.getWord()) {
-                for (char letter : text.toCharArray()) {
-                    if(guesses.contains(letter))
-                        showOnScreen += letter + " ";
-                    else
-                        showOnScreen += " __ ";
-                }
-                showOnScreen +="      ";
-            }
-            _hangmanView.printOnScreen(showOnScreen);
-        }
-
-
     private class lettersListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             JComboBox cb = (JComboBox)e.getSource();
@@ -57,6 +41,21 @@ public class HangmanController {
             _hangmanView.increaseRejectionGuessCounter();
     }
 
+    private void pritnGuess(Set<Character> guesses)
+    {
+        String showOnScreen = "";
+        for(String text : _hangmanGameLogic.getWord()) {
+            for (char letter : text.toCharArray()) {
+                if(guesses.contains(letter))
+                    showOnScreen += letter + " ";
+                else
+                    showOnScreen += " __ ";
+            }
+            showOnScreen +="      ";
+        }
+        _hangmanView.printOnScreen(showOnScreen);
+    }
+
     private void finishTheGame(HangmanGameState hgState){
         String endGameMessage;
         if(!hgState.isSuccessToGuessLastTime())
@@ -66,6 +65,5 @@ public class HangmanController {
         _hangmanView.printOnScreen(endGameMessage);
         _hangmanView.showMessage(endGameMessage);
         System.exit(0);
-
     }
 }
